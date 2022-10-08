@@ -1,0 +1,95 @@
+----------------------------
+Connect to Mysql
+----------------------------
+mysql -uroot -pcloudera
+
+----------------------------
+create database
+----------------------------
+
+create database zeyodb;
+
+----------------------------
+create table
+----------------------------
+
+create table customermod1(custid int, firstname varchar(20), lastname varchar(20), city varchar(50));
+
+----------------------------
+insert dummy records
+----------------------------
+insert into customermod1 values(1,'Arun','Kumar','Chennai');
+insert into customermod1 values(2,'srini','vasan','chennai');
+insert into customermod1 values(3,'vasu','devan','bangalore');
+insert into customermod1 values(4,'mohamad','imran','hyderabad');
+insert into customermod1 values(5,'arun','bhaskar','channai');
+
+----------------------------
+verify data
+----------------------------
+select * from customermod
+
+----------------------------
+sqoop command design
+----------------------------
+
+hostname : localhost
+port: 3306
+username: root
+password: cloudera
+database: zeyodb
+table: customermod
+
+sqoop import --connect jdbc:mysql://localhost:3306/zeyodb --username root --password cloudera --table customermod1 -m 1 --target-dir /user/cloudera/firstimport
+
+----------------------------
+controlling import with where clause
+----------------------------
+
+sqoop import --connect jdbc:mysql://localhost:3306/zeyodb --username root --password cloudera --table customermod1 -m 1 --where "city='chennai'"--target-dir /user/cloudera/chennaidata
+
+select a.*, b.age, b.createdt, b.transactamt from cust_tab1 a join cust_tab2 b on a.custid=b.custid;
+
+sqoop import --connect jdbc:mysql://localhost:3306/zeyodb --username root --password cloudera -m 1 --query  "select a.*, b.age, b.createdt, b.transactamt from cust_tab1 a join cust_tab2 b on a.custid=b.custid where \$CONDITIONS" --delete-target-dir --target-dir /user/cloudera/querydata
+
+
+Import incremental data to HDFS
+
+sqoop import --connect jdbc:mysql://localhost:3306/zeyodb --username root --password cloudera --table customermod1 -m 1 --target-dir /user/cloudera/chennaidata --incremental appane --check-column id --last-value 3
+
+
+AUTOMATE ABOVE WITH SQOOP JOB
+create sqoop job and automate the import, sqoop job will remember last value
+1-sqoop job create
+2-sqoop job view
+3-sqoop jon execute
+
+sqoop job studentImport -- import --connect jdbc:mysql://localhost:3306/zeyodb --username root --password cloudera --table customermod1 -m 1 --target-dir /user/cloudera/chennaidata --incremental appane --check-column id --last-value 0
+
+check job lists
+--------------------
+sqoop  job --list
+
+execute sqoop jobs
+--------------------
+sqoop job --exec <job name>
+
+details of job
+----------------------
+sqoop job --show <job name>
+
+
+create password file 
+/home/cloudera/passfile/pass
+
+echo -n <password> > /home/cloudera/passfile/pass
+echo -n cloudera  > /home/cloudera/passfile/pass
+
+if pass file present in hdfs
+
+hdfs:/user/cloudera/passfile/pass
+in place of
+file:///home/cloudera/passfile/pass
+
+sqoop job --create studentImpPas -- import --connect jdbc:mysql://localhost:3306/zeyodb --username root --password-file file:///home/cloudera/passfile/pass --table customermod1 -m 1 --target-dir /user/cloudera/chennaidata --incremental append --check-column custid --last-value 0
+
