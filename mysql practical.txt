@@ -6,13 +6,11 @@ mysql -uroot -pcloudera
 ----------------------------
 create database
 ----------------------------
-
 create database zeyodb;
 
 ----------------------------
 create table
 ----------------------------
-
 create table customermod1(custid int, firstname varchar(20), lastname varchar(20), city varchar(50));
 
 ----------------------------
@@ -32,7 +30,6 @@ select * from customermod
 ----------------------------
 sqoop command design
 ----------------------------
-
 hostname : localhost
 port: 3306
 username: root
@@ -45,7 +42,6 @@ sqoop import --connect jdbc:mysql://localhost:3306/zeyodb --username root --pass
 ----------------------------
 controlling import with where clause
 ----------------------------
-
 sqoop import --connect jdbc:mysql://localhost:3306/zeyodb --username root --password cloudera --table customermod1 -m 1 --where "city='chennai'"--target-dir /user/cloudera/chennaidata
 
 select a.*, b.age, b.createdt, b.transactamt from cust_tab1 a join cust_tab2 b on a.custid=b.custid;
