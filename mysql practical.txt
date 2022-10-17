@@ -102,3 +102,8 @@ Driver name : direct
 sqoop export --connect jdbc:mysql://localhost:3306/mec_exp --username root --password cloudera --table manifest1 -m 1  --export-dir /user/cloudera/mass_prac/massdata.txt --direct
 
 
+incase of failure we create staging table and export into staging table then main table
+
+sqoop export --connect jdbc:mysql://localhost:3306/mec_exp --username root --password cloudera --table manifest1 -m 1 --staging-table manifest_stg --clear-staging-table --export-dir /user/cloudera/mass_prac/massdata.txt --direct
+
+
