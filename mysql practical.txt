@@ -89,3 +89,16 @@ file:///home/cloudera/passfile/pass
 
 sqoop job --create studentImpPas -- import --connect jdbc:mysql://localhost:3306/zeyodb --username root --password-file file:///home/cloudera/passfile/pass --table customermod1 -m 1 --target-dir /user/cloudera/chennaidata --incremental append --check-column custid --last-value 0
 
+----------------------------
+export data from HDFS to RDBMS
+----------------------------
+parameters
+database name: mec_exp
+table_name : manifest1
+hadoop directory: /user/cloudera/mass_prac/
+file name : massdata.txt
+Driver name : direct
+
+sqoop export --connect jdbc:mysql://localhost:3306/mec_exp --username root --password cloudera --table manifest1 -m 1  --export-dir /user/cloudera/mass_prac/massdata.txt --direct
+
+
