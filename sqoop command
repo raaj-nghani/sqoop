@@ -1,0 +1,1 @@
+sqoop import --connect jdbc:mysql://localhost:3306/<dbname> --username --root --passwprd <password> --table emptbl -m 1 --target-dir /user/cloudera/import
