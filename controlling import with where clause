@@ -1,0 +1,11 @@
+mysql data
+
+
+
+
+
+
+
+
+sqoop import --connect jdbc:mysql://localhost:3306/zeyodb --username root --password
+cloudera --table employee -m 1 where "salary > 1500" --target-dir /user/cloudera/limitimport
