@@ -1,0 +1,41 @@
+mysql data
+
+mysql> select * from employee;
++------+-----------+--------+-------+--------+
+| id   | fname     | lname  | basic | salary |
++------+-----------+--------+-------+--------+
+|    1 | Raj       | Kumar  |  1500 |   1800 |
+|    2 | Rajesh    | Kumar  |  1200 |   1500 |
+|    3 | Kiran     | Kumari |  1200 |   1550 |
+|    4 | Kishor    | Singh  |  1800 |   2200 |
+|    5 | Manan     | Bind   |  1000 |   1200 |
+|    6 | Manoj     | Singh  |  1100 |   1300 |
+|    7 | Sapna     | Kumari |  1500 |   1800 |
+|    8 | Sonali    | Sharma |  1500 |   1800 |
+|    9 | Shubham   | Rai    |  1500 |   1800 |
+|   10 | Sukantala | Khan   |  1500 |   1800 |
+|   11 | San       | Yong   |     0 |   1800 |
+|   12 | Sam       | NULL   |     0 |   1900 |
++------+-----------+--------+-------+--------+
+
+
+sqoop import --connect jdbc:mysql://localhost:3306/zeyodb --username root --password cloudera --table employee -m 1 --where "salary > 1500" --target-dir /user/cloudera/empimport
+
+
+
+
+
+
+
+sqoop import --connect jdbc:mysql://localhost:3306/zeyodb --username root --password
+cloudera --table employee -m 1 where "salary > 1500" --target-dir /user/cloudera/limitimport
+
+hadoop fs -cat /user/cloudera/empimport/part-m-00000
+1,Raj,Kumar,1500,1800
+3,Kiran,Kumari,1200,1550
+4,Kishor,Singh,1800,2200
+7,Sapna,Kumari,1500,1800
+8,Sonali,Sharma,1500,1800
+9,Shubham,Rai,1500,1800
+10,Sukantala,Khan,1500,1800
+
