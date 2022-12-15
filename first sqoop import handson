@@ -1,0 +1,47 @@
+connect to mysql
+	mysql -uroot -pcloudera
+	
+create database as zeyodb
+	create database zeyodb;
+	
+create table as customermod;(6 columns)
+	create table customermod(custid int, firstname varchar(20), lastname varchar(20), city varchar(50));
+	
+insert dummy records
+	insert into customermod values(1,'Arun','KUmar','Chennai');
+	insert into customermod values(2,'srini','vasan','Chennai');
+	insert into customermod values(3,'vasu','dhavan','bangalore');
+	insert into customermod values(4,'mohamad','khan','hyderabad');
+	insert into customermod values(5,'Arun','bhaskar','Chennai');
+	insert into customermod values(6,'kunal','singh','hyderabad');
+	insert into customermod values(7,'manju','nath','bangalore');
+	
+verify the data in mysql
+	show tables;
+	select * from customermod;
+	
+come to edge node design sqoop import command
+
+	hostname	localhost
+	port		3306
+	username	root
+	password	cloudera
+	db		zeyodb
+	table		customermod
+	sqoop import --connect jdbc:mysql://localhost:3306/zeyodb --username root --password cloudera --table customermod -m 1 --target-dir /user/cloudera/firstimport
+	 
+shoot it
+check target directory
+
+[cloudera@quickstart ~]$ hadoop fs -ls /user/cloudera/firstimportFound 2 items
+-rw-r--r--   1 cloudera cloudera          0 2022-12-14 16:33 /user/cloudera/firstimport/_SUCCESS
+-rw-r--r--   1 cloudera cloudera        162 2022-12-14 16:33 /user/cloudera/firstimport/part-m-00000
+
+[cloudera@quickstart ~]$ hadoop fs -cat /user/cloudera/firstimport/part-m-000001~Arun~KUmar~Chennai
+2~srini~vasan~Chennai
+3~vasu~dhavan~bangalore
+4~mohamad~khan~hyderabad
+5~Arun~bhaskar~Chennai
+6~kunal~singh~hyderabad
+7~manju~nath~bangalore
+[cloudera@quickstart ~]$ 
